@@ -4,6 +4,7 @@ import helmet from "helmet";
 import notFoundHandler from "./middleware/notFound.middleware.js";
 import errorHandler from "./middleware/error.middleware.js";
 import authRoutes from "./routes/auth.routes.js";
+import groupRoutes from "./routes/group.routes.js";
 
 const app = express();
 
@@ -26,6 +27,9 @@ app.get("/api/v1/test-error", (req, res, next) => {
     next(error);
 });
 app.use("/api/v1/auth", authRoutes);
+
+app.use("/api/v1/groups", groupRoutes);
+
 // 404 handler
 app.use(notFoundHandler);
 
