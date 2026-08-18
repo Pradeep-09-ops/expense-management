@@ -26,6 +26,28 @@ const createExpense = async (req, res, next) => {
     }
 };
 
+const getGroupExpenses = async (req, res, next) => {
+    try {
+        const { groupId } = req.params;
+        const currentUserId = req.user.userId;
+
+        const expenses = await expenseService.getGroupExpenses(
+            groupId,
+            currentUserId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Expenses fetched successfully",
+            data: expenses
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 export default {
   createExpense,
+  getGroupExpenses
 };

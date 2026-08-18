@@ -179,6 +179,36 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
     return expense;
 };
 
+const getGroupExpenses = async (groupId, currentUserId)=>{
+        //1. Checking if group exists
+        const group = await Group.findById(groupId);
+
+        if(!group){
+            const error = new Error("Group Not Found");
+            error.statusCode(404);
+            throw error;    
+        }
+
+        //2. Checking user is an active group member
+        const memberShip = await GroupMember.findOne({
+            groupId,
+            userId: currentUserId,
+            status: "ACTIVE"
+        });
+
+        if(!memberShip){
+            const error = new Error("You are not an active member of this group")
+        }
+
+        //Getting expenses
+        const expenses = await Expense.find({groupId})
+        .populate("paidBy", "name email")
+        .populate("splits.user", "name email")
+        .sort({date:-1});
+        return expenses;
+};
+
 export default {
-    createExpense
+    createExpense,
+    getGroupExpenses
 };
