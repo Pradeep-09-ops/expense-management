@@ -233,7 +233,40 @@ const getGroupExpenses = async (
     };
 };
 
+
+const getExpenseById = async (expenseId, currentUserId) => {
+
+    // 1. Find the expense
+    const expense = await Expense.findById(expenseId)
+        .populate("paidBy", "name email")
+        .populate("splits.user", "name email");
+
+    if (!expense) {
+        const error = new Error("Expense not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    // 2. Check whether current user belongs to the expense's group
+    const membership = await GroupMember.findOne({
+        groupId: expense.groupId,
+        userId: currentUserId,
+        status: "ACTIVE"
+    });
+
+    if (!membership) {
+        const error = new Error(
+            "You are not an active member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    return expense;
+};
+
 export default {
     createExpense,
-    getGroupExpenses
+    getGroupExpenses,
+    getExpenseById
 };

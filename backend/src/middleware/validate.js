@@ -1,9 +1,9 @@
-const validate = (schema) => {
+const validate = (schema, source = "body") => {
     return (req, res, next) => {
         try {
-            const validatedData = schema.parse(req.body);
+            const validatedData = schema.parse(req[source]);
 
-            req.body = validatedData;
+            req[source] = validatedData;
 
             next();
         } catch (error) {

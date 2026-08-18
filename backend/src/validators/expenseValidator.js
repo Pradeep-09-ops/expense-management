@@ -1,11 +1,17 @@
 import { z } from "zod";
 
+// Reusable MongoDB ObjectId validation
+const objectIdSchema = z
+    .string()
+    .regex(/^[0-9a-fA-F]{24}$/, "Invalid MongoDB ObjectId");
+
+
 const expenseSchema = z.object({
     amount: z.number().positive(),
 
     description: z.string().min(1).trim(),
 
-    paidBy: z.string().min(1),
+    paidBy: objectIdSchema,
 
     splitType: z.enum([
         "EQUAL",
@@ -15,12 +21,14 @@ const expenseSchema = z.object({
 
     splits: z.array(
         z.object({
-            user: z.string().min(1),
+            user: objectIdSchema,
             value: z.number().nonnegative().optional()
         })
     ).min(1)
+
 }).superRefine((data, ctx) => {
 
+    // EXACT validation
     if (data.splitType === "EXACT") {
 
         data.splits.forEach((split, index) => {
@@ -37,6 +45,7 @@ const expenseSchema = z.object({
 
     }
 
+    // PERCENTAGE validation
     if (data.splitType === "PERCENTAGE") {
 
         data.splits.forEach((split, index) => {
@@ -62,5 +71,17 @@ const expenseSchema = z.object({
     }
 
 });
+
+
+// Params validation for:
+// GET /expenses/:expenseId
+const expenseIdParamsSchema = z.object({
+    expenseId: objectIdSchema
+});
+
+
+export {
+    expenseIdParamsSchema
+};
 
 export default expenseSchema;
