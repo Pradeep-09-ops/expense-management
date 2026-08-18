@@ -1,5 +1,5 @@
-import Group from "../models/Group.js"
-import GroupMember from "../models/GroupMember.js"
+import Group from "../models/groupModel.js"
+import GroupMember from "../models/groupMemberModel.js"
 
 const createGroup = async(groupData)=>{
     return await Group.create(groupData);

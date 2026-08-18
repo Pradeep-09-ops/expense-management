@@ -1,4 +1,4 @@
-import { createNewGroup, addMemberToGroup } from "../services/group.service.js";
+import { createNewGroup, addMemberToGroup } from "../services/groupService.js";
 
 const createGroup = async(req, res, next) =>{
     try{

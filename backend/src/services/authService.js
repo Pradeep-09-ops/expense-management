@@ -1,5 +1,5 @@
 import bcrypt from "bcrypt";
-import { findByEmail, findById, createUser } from "../repositories/user.repository.js";
+import { findByEmail, findById, createUser } from "../repositories/userRepository.js";
 import generateToken from "../utils/jwt.js";
 
 //Register

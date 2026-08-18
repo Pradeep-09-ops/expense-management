@@ -1,6 +1,6 @@
-import {createGroup,createGroupMember, findGroupMember, findGroupMemberByUser} from "../repositories/group.repository.js";
+import {createGroup,createGroupMember, findGroupMember, findGroupMemberByUser} from "../repositories/groupRepository.js";
 
-import { findById } from "../repositories/user.repository.js";
+import { findById } from "../repositories/userRepository.js";
 
 const createNewGroup = async({name, currency}, userId) =>{
     const group = await createGroup({
