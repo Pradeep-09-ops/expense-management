@@ -31,21 +31,33 @@ const getGroupExpenses = async (req, res, next) => {
         const { groupId } = req.params;
         const currentUserId = req.user.userId;
 
-        const expenses = await expenseService.getGroupExpenses(
+        const { page = "1", limit = "10" } = req.query;
+
+        const pageNumber = Number(page);
+        const limitNumber = Number(limit);
+
+        const skip = (pageNumber - 1) * limitNumber;
+
+        const result = await expenseService.getGroupExpenses(
             groupId,
-            currentUserId
+            currentUserId,
+            pageNumber,
+            limitNumber,
+            skip
         );
 
         res.status(200).json({
             success: true,
             message: "Expenses fetched successfully",
-            data: expenses
+            data: result.expenses,
+            pagination: result.pagination
         });
 
     } catch (error) {
         next(error);
     }
 };
+
 
 export default {
   createExpense,

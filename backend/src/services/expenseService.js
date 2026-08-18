@@ -179,33 +179,58 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
     return expense;
 };
 
-const getGroupExpenses = async (groupId, currentUserId)=>{
-        //1. Checking if group exists
-        const group = await Group.findById(groupId);
+const getGroupExpenses = async (
+    groupId,
+    currentUserId,
+    pageNumber,
+    limitNumber,
+    skip
+) => {
 
-        if(!group){
-            const error = new Error("Group Not Found");
-            error.statusCode(404);
-            throw error;    
-        }
+    const group = await Group.findById(groupId);
 
-        //2. Checking user is an active group member
-        const memberShip = await GroupMember.findOne({
-            groupId,
-            userId: currentUserId,
-            status: "ACTIVE"
-        });
+    if (!group) {
+        const error = new Error("Group not found");
+        error.statusCode = 404;
+        throw error;
+    }
 
-        if(!memberShip){
-            const error = new Error("You are not an active member of this group")
-        }
+    const membership = await GroupMember.findOne({
+        groupId,
+        userId: currentUserId,
+        status: "ACTIVE"
+    });
 
-        //Getting expenses
-        const expenses = await Expense.find({groupId})
+    if (!membership) {
+        const error = new Error(
+            "You are not an active member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    const expenses = await Expense.find({ groupId })
         .populate("paidBy", "name email")
         .populate("splits.user", "name email")
-        .sort({date:-1});
-        return expenses;
+        .sort({ date: -1 })
+        .skip(skip)
+        .limit(limitNumber);
+
+    const totalExpenses = await Expense.countDocuments({
+        groupId
+    });
+
+    const totalPages = Math.ceil(totalExpenses / limitNumber);
+
+    return {
+        expenses,
+        pagination: {
+            page: pageNumber,
+            limit: limitNumber,
+            totalExpenses,
+            totalPages
+        }
+    };
 };
 
 export default {
