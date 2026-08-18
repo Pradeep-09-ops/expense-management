@@ -12,7 +12,7 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
         splits
     } = expenseData;
 
-    // 1. Check whether group exists
+    // 1. Check if group exists
     const group = await Group.findById(groupId);
 
     if (!group) {
@@ -21,7 +21,7 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
         throw error;
     }
 
-    // 2. Check whether current user is an active member
+    // 2. Check if current user is an active member
     const currentUserMembership = await GroupMember.findOne({
         groupId,
         userId: currentUserId,
@@ -36,14 +36,45 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
         throw error;
     }
 
-    // 3. Validate amount
-    if (!amount || amount <= 0) {
+    // 3. Basic amount validation
+    if (amount === undefined || amount === null || amount <= 0) {
         const error = new Error("Amount must be greater than 0");
         error.statusCode = 400;
         throw error;
     }
 
-    // 4. Check whether paidBy is an active group member
+    // 4. Validate split type
+    const validSplitTypes = ["EQUAL", "EXACT", "PERCENTAGE"];
+
+    if (!validSplitTypes.includes(splitType)) {
+        const error = new Error("Invalid split type");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // 5. Validate splits
+    if (!Array.isArray(splits) || splits.length === 0) {
+        const error = new Error("At least one split is required");
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // 6. Prevent duplicate users in splits
+    const splitUserIds = splits.map((split) => split.user);
+
+    const uniqueUserIds = new Set(
+        splitUserIds.map((id) => id.toString())
+    );
+
+    if (uniqueUserIds.size !== splitUserIds.length) {
+        const error = new Error(
+            "A user cannot appear more than once in splits"
+        );
+        error.statusCode = 400;
+        throw error;
+    }
+
+    // 7. Check paidBy is an active member
     const payerMembership = await GroupMember.findOne({
         groupId,
         userId: paidBy,
@@ -58,16 +89,7 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
         throw error;
     }
 
-    // 5. Validate splits
-    if (!Array.isArray(splits) || splits.length === 0) {
-        const error = new Error("At least one split is required");
-        error.statusCode = 400;
-        throw error;
-    }
-
-    // 6. Check that every split user belongs to the group
-    const splitUserIds = splits.map((split) => split.user);
-
+    // 8. Check every split user is an active member
     const groupMembers = await GroupMember.find({
         groupId,
         userId: { $in: splitUserIds },
@@ -84,7 +106,7 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
 
     let processedSplits;
 
-    // 7. Process split type
+    // 9. Process split
     switch (splitType) {
 
         case "EQUAL": {
@@ -141,15 +163,9 @@ const createExpense = async (groupId, currentUserId, expenseData) => {
 
             break;
         }
-
-        default: {
-            const error = new Error("Invalid split type");
-            error.statusCode = 400;
-            throw error;
-        }
     }
 
-    // 8. Create expense
+    // 10. Create expense
     const expense = await Expense.create({
         groupId,
         paidBy,
