@@ -33,4 +33,11 @@ router.delete(
     expenseController.deleteExpense
 );
 
+//getting the summary of the expense
+router.get(
+    "/:groupId/summary",
+    authenticate,
+    expenseController.getGroupSummary
+);
+
 export default router;

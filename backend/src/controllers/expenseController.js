@@ -124,11 +124,33 @@ const deleteExpense = async (req, res, next) => {
     }
 };
 
+const getGroupSummary = async (req, res, next) => {
+    try {
+        const { groupId } = req.params;
+        const currentUserId = req.user.userId;
+
+        const summary = await expenseService.getGroupSummary(
+            groupId,
+            currentUserId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Group summary fetched successfully",
+            data: summary
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
 
 export default {
   createExpense,
   getGroupExpenses,
   getExpenseById,
   updateExpense,
-  deleteExpense
+  deleteExpense,
+  getGroupSummary
 };

@@ -446,10 +446,115 @@ const deleteExpense = async (expenseId, currentUserId) => {
     return expense;
 };
 
+//Expense Summary Part->
+const getGroupSummary = async (groupId, currentUserId) => {
+
+    // 1. Verify group exists
+    const group = await Group.findById(groupId);
+
+    if (!group) {
+        const error = new Error("Group not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    // 2. Verify current user is an active member
+    const currentUserMembership = await GroupMember.findOne({
+        groupId,
+        userId: currentUserId,
+        status: "ACTIVE"
+    });
+
+    if (!currentUserMembership) {
+        const error = new Error(
+            "You are not an active member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    // 3. Get all active group members
+    const groupMembers = await GroupMember.find({
+        groupId,
+        status: "ACTIVE"
+    }).populate("userId", "name email");
+
+    // 4. Get all group expenses
+    const expenses = await Expense.find({
+        groupId
+    });
+
+    // 5. Initialize balances
+    const balances = {};
+
+    groupMembers.forEach((member) => {
+        balances[member.userId._id.toString()] = {
+            paid: 0,
+            owed: 0
+        };
+    });
+
+    // 6. Process paidBy
+    expenses.forEach((expense) => {
+
+        const payerId = expense.paidBy.toString();
+
+        if (balances[payerId]) {
+            balances[payerId].paid += Number(expense.amount);
+        }
+    });
+
+    // 7. Process splits
+    expenses.forEach((expense) => {
+
+        expense.splits.forEach((split) => {
+
+            const userId = split.user.toString();
+
+            if (balances[userId]) {
+                balances[userId].owed += Number(split.value);
+            }
+        });
+    });
+
+    // 8. Calculate balance
+    const summary = groupMembers.map((member) => {
+
+        const userId = member.userId._id.toString();
+
+        const paid = balances[userId].paid;
+        const owed = balances[userId].owed;
+
+        return {
+            user: {
+                _id: member.userId._id,
+                name: member.userId.name,
+                email: member.userId.email
+            },
+            paid,
+            owed,
+            balance: paid - owed
+        };
+    });
+
+    // 9. User information is already populated above
+
+    // 10. Return summary
+    return {
+        groupId,
+        totalExpenses: expenses.reduce(
+            (total, expense) => total + Number(expense.amount),
+            0
+        ),
+        members: summary
+    };
+};
+
 export default {
     createExpense,
     getGroupExpenses,
     getExpenseById,
     updateExpense,
-    deleteExpense
+    deleteExpense,
+    getGroupSummary
 };
