@@ -72,6 +72,28 @@ const expenseSchema = z.object({
 
 });
 
+const updateExpenseSchema = z.object({
+    amount: z.number().positive().optional(),
+
+    description: z.string().min(1).trim().optional(),
+
+    paidBy: objectIdSchema.optional(),
+
+    splitType: z.enum([
+        "EQUAL",
+        "EXACT",
+        "PERCENTAGE"
+    ]).optional(),
+
+    splits: z.array(
+        z.object({
+            user: objectIdSchema,
+            value: z.number().nonnegative().optional()
+        })
+    ).min(1).optional(),
+
+    date: z.coerce.date().optional()
+});
 
 // Params validation for:
 // GET /expenses/:expenseId
@@ -81,7 +103,8 @@ const expenseIdParamsSchema = z.object({
 
 
 export {
-    expenseIdParamsSchema
+    expenseIdParamsSchema,
+    updateExpenseSchema
 };
 
 export default expenseSchema;

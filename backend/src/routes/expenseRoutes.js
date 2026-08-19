@@ -2,7 +2,7 @@ import express from "express"
 import authenticate from "../middleware/authMiddleware.js";
 import expenseController from "../controllers/expenseController.js";
 import expenseValidator, {
-    expenseIdParamsSchema
+    expenseIdParamsSchema, updateExpenseSchema
 } from "../validators/expenseValidator.js";
 import validate from "../middleware/validate.js";
 const router = express.Router();
@@ -15,5 +15,14 @@ router.get("/groups/:groupId/expenses", authenticate, expenseController.getGroup
 
 // Get Single Expense   
 router.get("/expenses/:expenseId", authenticate, validate(expenseIdParamsSchema, "params"), expenseController.getExpenseById);
+
+//PATCH (Update expenses)
+router.patch(
+    "/expenses/:expenseId",
+    authenticate,
+    validate(expenseIdParamsSchema, "params"),
+    validate(updateExpenseSchema),
+    expenseController.updateExpense
+);
 
 export default router;

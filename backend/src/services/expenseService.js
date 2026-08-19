@@ -265,8 +265,143 @@ const getExpenseById = async (expenseId, currentUserId) => {
     return expense;
 };
 
+const updateExpense = async (
+    expenseId,
+    currentUserId,
+    updateData
+) => {
+
+    const expense = await Expense.findById(expenseId);
+
+    if (!expense) {
+        const error = new Error("Expense not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    const membership = await GroupMember.findOne({
+        groupId: expense.groupId,
+        userId: currentUserId,
+        status: "ACTIVE"
+    });
+
+    if (!membership) {
+        const error = new Error(
+            "You are not an active member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    const isAdmin = membership.role === "ADMIN";
+
+    const isPayer =
+        expense.paidBy.toString() ===
+        currentUserId.toString();
+
+    if (!isAdmin && !isPayer) {
+        const error = new Error(
+            "You do not have permission to update this expense"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    const finalAmount =
+        updateData.amount ?? expense.amount;
+
+    const finalSplitType =
+        updateData.splitType ?? expense.splitType;
+
+    const finalSplits =
+        updateData.splits ?? expense.splits;
+
+    const splitUserIds = finalSplits.map(
+        (split) => split.user
+    );
+
+    const activeMembers = await GroupMember.find({
+        groupId: expense.groupId,
+        userId: { $in: splitUserIds },
+        status: "ACTIVE"
+    });
+
+    if (activeMembers.length !== splitUserIds.length) {
+        const error = new Error(
+            "All split users must be active members of the group"
+        );
+        error.statusCode = 400;
+        throw error;
+    }
+
+    if (finalSplitType === "EXACT") {
+
+        const total = finalSplits.reduce(
+            (sum, split) => sum + Number(split.value),
+            0
+        );
+
+        if (total !== Number(finalAmount)) {
+            const error = new Error(
+                "Sum of split amounts must equal expense amount"
+            );
+            error.statusCode = 400;
+            throw error;
+        }
+    }
+
+    if (finalSplitType === "PERCENTAGE") {
+
+        const total = finalSplits.reduce(
+            (sum, split) => sum + Number(split.value),
+            0
+        );
+
+        if (total !== 100) {
+            const error = new Error(
+                "Sum of percentages must equal 100"
+            );
+            error.statusCode = 400;
+            throw error;
+        }
+    }
+
+    let processedSplits = finalSplits;
+
+    if (finalSplitType === "EQUAL") {
+
+        const equalAmount =
+            Number(finalAmount) / finalSplits.length;
+
+        processedSplits = finalSplits.map((split) => ({
+            user: split.user,
+            value: equalAmount
+        }));
+    }
+
+    if (finalSplitType === "PERCENTAGE") {
+
+        processedSplits = finalSplits.map((split) => ({
+            user: split.user,
+            value:
+                (Number(finalAmount) * Number(split.value)) / 100
+        }));
+    }
+
+    Object.assign(expense, updateData);
+
+    expense.amount = finalAmount;
+    expense.splitType = finalSplitType;
+    expense.splits = processedSplits;
+
+    await expense.save();
+
+    return expense;
+};
+
 export default {
     createExpense,
     getGroupExpenses,
-    getExpenseById
+    getExpenseById,
+    updateExpense
 };
