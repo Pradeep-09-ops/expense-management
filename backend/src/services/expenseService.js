@@ -399,9 +399,57 @@ const updateExpense = async (
     return expense;
 };
 
+const deleteExpense = async (expenseId, currentUserId) => {
+
+    // 1. Find expense
+    const expense = await Expense.findById(expenseId);
+
+    if (!expense) {
+        const error = new Error("Expense not found");
+        error.statusCode = 404;
+        throw error;
+    }
+
+    // 2. Check group membership
+    const membership = await GroupMember.findOne({
+        groupId: expense.groupId,
+        userId: currentUserId,
+        status: "ACTIVE"
+    });
+
+    if (!membership) {
+        const error = new Error(
+            "You are not an active member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    // 3. Check permission
+    const isAdmin = membership.role === "ADMIN";
+
+    const isPayer =
+        expense.paidBy.toString() ===
+        currentUserId.toString();
+
+    if (!isAdmin && !isPayer) {
+        const error = new Error(
+            "You do not have permission to delete this expense"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    // 4. Delete expense
+    await Expense.findByIdAndDelete(expenseId);
+
+    return expense;
+};
+
 export default {
     createExpense,
     getGroupExpenses,
     getExpenseById,
-    updateExpense
+    updateExpense,
+    deleteExpense
 };

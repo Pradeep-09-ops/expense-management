@@ -25,4 +25,12 @@ router.patch(
     expenseController.updateExpense
 );
 
+//DELETE Route
+router.delete(
+    "/expenses/:expenseId",
+    authenticate,
+    validate(expenseIdParamsSchema, "params"),
+    expenseController.deleteExpense
+);
+
 export default router;
