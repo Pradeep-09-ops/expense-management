@@ -550,11 +550,90 @@ const getGroupSummary = async (groupId, currentUserId) => {
     };
 };
 
+//settlement
+const getGroupSettlements = async (groupId, currentUserId) => {
+
+    // 1. Get group summary
+    const summary = await getGroupSummary(
+        groupId,
+        currentUserId
+    );
+
+    // 2. Separate creditors and debtors
+    const creditors = [];
+    const debtors = [];
+
+    summary.members.forEach((member) => {
+
+        if (member.balance > 0) {
+            creditors.push({
+                user: member.user,
+                amount: member.balance
+            });
+        }
+
+        if (member.balance < 0) {
+            debtors.push({
+                user: member.user,
+                amount: Math.abs(member.balance)
+            });
+        }
+    });
+
+    // 3. Calculate settlements
+    const settlements = [];
+
+    let debtorIndex = 0;
+    let creditorIndex = 0;
+
+    while (
+        debtorIndex < debtors.length &&
+        creditorIndex < creditors.length
+    ) {
+
+        const debtor = debtors[debtorIndex];
+        const creditor = creditors[creditorIndex];
+
+        // Amount that can be settled between them
+        const amount = Math.min(
+            debtor.amount,
+            creditor.amount
+        );
+
+        settlements.push({
+            from: debtor.user,
+            to: creditor.user,
+            amount
+        });
+
+        // Reduce remaining amounts
+        debtor.amount -= amount;
+        creditor.amount -= amount;
+
+        // Move to next debtor if completely settled
+        if (debtor.amount === 0) {
+            debtorIndex++;
+        }
+
+        // Move to next creditor if completely settled
+        if (creditor.amount === 0) {
+            creditorIndex++;
+        }
+    }
+
+    // 4. Return settlements
+    return {
+        groupId,
+        settlements
+    };
+};
+
 export default {
     createExpense,
     getGroupExpenses,
     getExpenseById,
     updateExpense,
     deleteExpense,
-    getGroupSummary
+    getGroupSummary,
+    getGroupSettlements
 };

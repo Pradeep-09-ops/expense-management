@@ -40,4 +40,11 @@ router.get(
     expenseController.getGroupSummary
 );
 
+//settlement route
+router.get(
+    "/:groupId/settlement",
+    authenticate,
+    expenseController.getGroupSettlements
+);
+
 export default router;

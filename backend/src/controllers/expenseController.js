@@ -146,11 +146,36 @@ const getGroupSummary = async (req, res, next) => {
 };
 
 
+const getGroupSettlements = async (req, res, next) => {
+    try {
+        const { groupId } = req.params;
+        const currentUserId = req.user.userId;
+
+        const settlements =
+            await expenseService.getGroupSettlements(
+                groupId,
+                currentUserId
+            );
+
+        res.status(200).json({
+            success: true,
+            message: "Group settlements fetched successfully",
+            data: settlements
+        });
+
+    } catch (error) {
+        next(error);
+    }
+};
+
+
+
 export default {
   createExpense,
   getGroupExpenses,
   getExpenseById,
   updateExpense,
   deleteExpense,
-  getGroupSummary
+  getGroupSummary,
+  getGroupSettlements
 };
