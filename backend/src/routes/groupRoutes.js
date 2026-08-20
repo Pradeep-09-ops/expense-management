@@ -3,7 +3,7 @@ import express from "express";
 import {
     createGroup,
     addMember,
-    getGroups
+    getGroups, getGroup
 } from "../controllers/groupController.js";
 
 import authenticate from "../middleware/authMiddleware.js";
@@ -112,6 +112,43 @@ router.post("/", authenticate, createGroup);
  *         description: Authentication required
  */
 router.get("/", authenticate, getGroups);
+
+//GET one Group by :groupId
+/**
+ * @openapi
+ * /api/v1/groups/{id}:
+ *   get:
+ *     summary: Get group by ID
+ *     description: Returns a group if the authenticated user is an active member of that group.
+ *     tags:
+ *       - Groups
+ *
+ *     security:
+ *       - bearerAuth: []
+ *
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         description: ID of the group
+ *         schema:
+ *           type: string
+ *         example: 6a833cf96842ff613a14ad2c
+ *
+ *     responses:
+ *       200:
+ *         description: Group fetched successfully
+ *
+ *       401:
+ *         description: Authentication required
+ *
+ *       403:
+ *         description: User is not a member of this group
+ *
+ *       404:
+ *         description: Group not found
+ */
+router.get("/:id", authenticate, getGroup);
 
 /**
  * @openapi

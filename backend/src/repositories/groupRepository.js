@@ -31,10 +31,15 @@ const findGroupsByUser = async (userId) => {
     }).populate("groupId");
 };
 
+const findGroupById = async (groupId) => {
+    return await Group.findById(groupId);
+};
+
 export{
     createGroup,
     createGroupMember,
     findGroupMember,
     findGroupMemberByUser,
-    findGroupsByUser
+    findGroupsByUser,
+    findGroupById
 };

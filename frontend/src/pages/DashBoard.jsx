@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+
 import api from "../services/api";
 import CreateGroup from "../components/CreateGroup";
 
@@ -9,6 +11,8 @@ function Dashboard() {
   const [groups, setGroups] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
+
+  const navigate = useNavigate();
 
   const fetchGroups = async () => {
     try {
@@ -60,18 +64,23 @@ function Dashboard() {
       ) : (
         <div>
           {groups.map((groupMember) => (
-            <div key={groupMember._id}>
-              <h4>{groupMember.groupId.name}</h4>
+            <div
+            key={groupMember._id}
+            onClick={() =>
+            navigate(`/groups/${groupMember.groupId._id}`)
+            }
+            >
+        <h4>{groupMember.groupId.name}</h4>
 
-              <p>
-                Currency: {groupMember.groupId.currency}
-              </p>
+        <p>
+        Currency: {groupMember.groupId.currency}
+        </p>
 
-              <p>
-                Role: {groupMember.role}
-              </p>
-            </div>
-          ))}
+        <p>
+        Role: {groupMember.role}
+        </p>
+    </div>
+))}
         </div>
       )}
     </div>
