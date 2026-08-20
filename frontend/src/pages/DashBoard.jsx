@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
+import CreateGroup from "../components/CreateGroup";
 
 function Dashboard() {
   const { user, loading: authLoading } = useAuth();
@@ -9,26 +10,28 @@ function Dashboard() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const fetchGroups = async () => {
+    try {
+      setError("");
+
+      const response = await api.get("/groups");
+
+      console.log("Groups response:", response.data);
+
+      setGroups(response.data.data);
+    } catch (error) {
+      console.error("Failed to fetch groups:", error);
+
+      setError(
+        error.response?.data?.message ||
+          "Failed to load groups. Please try again."
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
-    const fetchGroups = async () => {
-      try {
-        const response = await api.get("/groups");
-
-        console.log("Groups response:", response.data);
-
-        setGroups(response.data.data);
-      } catch (error) {
-        console.error("Failed to fetch groups:", error);
-
-        setError(
-          error.response?.data?.message ||
-            "Failed to load groups. Please try again."
-        );
-      } finally {
-        setLoading(false);
-      }
-    };
-
     fetchGroups();
   }, []);
 
@@ -45,6 +48,8 @@ function Dashboard() {
       <h1>Dashboard</h1>
 
       <h2>Welcome, {user?.name}</h2>
+
+      <CreateGroup onGroupCreated={fetchGroups} />
 
       {error && <p>{error}</p>}
 
