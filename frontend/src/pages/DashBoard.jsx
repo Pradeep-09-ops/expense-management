@@ -63,24 +63,31 @@ function Dashboard() {
         <p>You are not a member of any groups yet.</p>
       ) : (
         <div>
-          {groups.map((groupMember) => (
-            <div
-            key={groupMember._id}
-            onClick={() =>
-            navigate(`/groups/${groupMember.groupId._id}`)
+          {groups.map((groupMember) => {
+            // Prevent error if groupId is null
+            if (!groupMember.groupId) {
+              return null;
             }
-            >
-        <h4>{groupMember.groupId.name}</h4>
 
-        <p>
-        Currency: {groupMember.groupId.currency}
-        </p>
+            return (
+              <div
+                key={groupMember._id}
+                onClick={() =>
+                  navigate(`/groups/${groupMember.groupId._id}`)
+                }
+              >
+                <h4>{groupMember.groupId.name}</h4>
 
-        <p>
-        Role: {groupMember.role}
-        </p>
-    </div>
-))}
+                <p>
+                  Currency: {groupMember.groupId.currency}
+                </p>
+
+                <p>
+                  Role: {groupMember.role}
+                </p>
+              </div>
+            );
+          })}
         </div>
       )}
     </div>
