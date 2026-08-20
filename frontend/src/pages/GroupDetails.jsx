@@ -6,35 +6,49 @@ function GroupDetails() {
   const { groupsId } = useParams();
 
   const [group, setGroup] = useState(null);
+  const [members, setMembers] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    const fetchGroup = async () => {
+    const fetchGroupDetails = async () => {
       try {
         const token = localStorage.getItem("token");
 
-        const response = await axios.get(
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        // Fetch group
+        const groupResponse = await axios.get(
           `http://localhost:3000/api/v1/groups/${groupsId}`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
+          config
         );
 
-        setGroup(response.data.data);
+        // Fetch members
+        const membersResponse = await axios.get(
+          `http://localhost:3000/api/v1/groups/${groupsId}/members`,
+          config
+        );
+
+        setGroup(groupResponse.data.data);
+        setMembers(membersResponse.data.data);
+
       } catch (error) {
         console.error(error);
+
         setError(
-          error.response?.data?.message || "Failed to fetch group"
+          error.response?.data?.message ||
+          "Failed to fetch group details"
         );
       } finally {
         setLoading(false);
       }
     };
 
-    fetchGroup();
+    fetchGroupDetails();
   }, [groupsId]);
 
   if (loading) {
@@ -60,6 +74,26 @@ function GroupDetails() {
       <p>
         <strong>Owner ID:</strong> {group.ownerId}
       </p>
+
+      <hr />
+
+      <h2>Members</h2>
+
+      {members.length === 0 ? (
+        <p>No members found.</p>
+      ) : (
+        <ul>
+          {members.map((member) => (
+            <li key={member._id}>
+              <strong>{member.userId.name}</strong>
+              {" — "}
+              {member.userId.email}
+              {" — "}
+              {member.role}
+            </li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }

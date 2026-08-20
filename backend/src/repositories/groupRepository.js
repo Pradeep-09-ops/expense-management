@@ -35,11 +35,19 @@ const findGroupById = async (groupId) => {
     return await Group.findById(groupId);
 };
 
+const findGroupMembers = async (groupId) => {
+    return await GroupMember.find({
+        groupId,
+        status: "ACTIVE"
+    }).populate("userId", "name email");
+};
+
 export{
     createGroup,
     createGroupMember,
     findGroupMember,
     findGroupMemberByUser,
     findGroupsByUser,
-    findGroupById
+    findGroupById,
+    findGroupMembers
 };

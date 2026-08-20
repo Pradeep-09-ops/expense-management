@@ -1,4 +1,4 @@
-import {createGroup,createGroupMember, findGroupMember, findGroupMemberByUser, findGroupsByUser, findGroupById} from "../repositories/groupRepository.js";
+import {createGroup,createGroupMember, findGroupMember, findGroupMemberByUser, findGroupsByUser, findGroupById, findGroupMembers} from "../repositories/groupRepository.js";
 
 import { findById } from "../repositories/userRepository.js";
 
@@ -107,9 +107,30 @@ const getGroupById = async (groupId, userId) => {
     return group;
 };
 
+const getGroupMembers = async (groupId, userId) => {
+
+    // 1. Check whether current user is an active member
+    const currentMember = await findGroupMember(
+        groupId,
+        userId
+    );
+
+    if (!currentMember) {
+        const error = new Error(
+            "You are not a member of this group"
+        );
+        error.statusCode = 403;
+        throw error;
+    }
+
+    // 2. Get active group members
+    return await findGroupMembers(groupId);
+};
+
 export{
     createNewGroup,
     addMemberToGroup,
     getUserGroups,
-    getGroupById
+    getGroupById,
+    getGroupMembers
 };

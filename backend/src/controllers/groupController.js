@@ -1,4 +1,4 @@
-import { createNewGroup, addMemberToGroup, getUserGroups, getGroupById } from "../services/groupService.js";
+import { createNewGroup, addMemberToGroup, getUserGroups, getGroupById, getGroupMembers} from "../services/groupService.js";
 
 const createGroup = async(req, res, next) =>{
     try{
@@ -62,9 +62,27 @@ const getGroup = async (req, res, next) => {
     }
 };
 
+const getMembers = async (req, res, next) => {
+    try {
+        const members = await getGroupMembers(
+            req.params.id,
+            req.user.userId
+        );
+
+        res.status(200).json({
+            success: true,
+            message: "Group members fetched successfully",
+            data: members
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export {
     createGroup,
     addMember,
     getGroups,
-    getGroup
+    getGroup,
+    getMembers  
 };

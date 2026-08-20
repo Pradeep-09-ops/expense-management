@@ -3,7 +3,7 @@ import express from "express";
 import {
     createGroup,
     addMember,
-    getGroups, getGroup
+    getGroups, getGroup, getMembers
 } from "../controllers/groupController.js";
 
 import authenticate from "../middleware/authMiddleware.js";
@@ -149,6 +149,89 @@ router.get("/", authenticate, getGroups);
  *         description: Group not found
  */
 router.get("/:id", authenticate, getGroup);
+
+//GET members of a particular group
+ /**
+  * @openapi
+  * /api/v1/groups/{id}/members:
+  *   get:
+  *     summary: Get group members
+  *     description: Returns all active members of a group. The authenticated user must be an active member of the group.
+  *     tags:
+  *       - Groups
+  *
+  *     security:
+  *       - bearerAuth: []
+  *
+  *     parameters:
+  *       - in: path
+  *         name: id
+  *         required: true
+  *         description: ID of the group
+  *         schema:
+  *           type: string
+  *         example: 6a833cf96842ff613a14ad2c
+  *
+  *     responses:
+  *       200:
+  *         description: Group members fetched successfully
+  *         content:
+  *           application/json:
+  *             schema:
+  *               type: object
+  *               properties:
+  *                 success:
+  *                   type: boolean
+  *                   example: true
+  *                 message:
+  *                   type: string
+  *                   example: Group members fetched successfully
+  *                 data:
+  *                   type: array
+  *                   items:
+  *                     type: object
+  *                     properties:
+  *                       _id:
+  *                         type: string
+  *                         example: 6a8341236842ff613a14ad30
+  *                       groupId:
+  *                         type: string
+  *                         example: 6a833cf96842ff613a14ad2c
+  *                       userId:
+  *                         type: object
+  *                         properties:
+  *                           _id:
+  *                             type: string
+  *                             example: 6a8339286842ff613a14ad2b
+  *                           name:
+  *                             type: string
+  *                             example: Pradeep Sharma
+  *                           email:
+  *                             type: string
+  *                             example: pradeep@gmail.com
+  *                       role:
+  *                         type: string
+  *                         enum:
+  *                           - ADMIN
+  *                           - MEMBER
+  *                         example: MEMBER
+  *                       status:
+  *                         type: string
+  *                         enum:
+  *                           - ACTIVE
+  *                           - INACTIVE
+  *                         example: ACTIVE
+  *
+  *       401:
+  *         description: Authentication required
+  *
+  *       403:
+  *         description: User is not a member of this group
+  *
+  *       404:
+  *         description: Group not found
+  */
+router.get("/:id/members", authenticate, getMembers);
 
 /**
  * @openapi
