@@ -2,7 +2,8 @@ import express from "express";
 
 import {
     createGroup,
-    addMember
+    addMember,
+    getGroups
 } from "../controllers/groupController.js";
 
 import authenticate from "../middleware/authMiddleware.js";
@@ -46,6 +47,71 @@ const router = express.Router();
  */
 router.post("/", authenticate, createGroup);
 
+
+//GET Groups
+/**
+ * @openapi
+ * /api/v1/groups:
+ *   get:
+ *     summary: Get user's groups
+ *     description: Returns all active groups that the authenticated user is a member of.
+ *     tags:
+ *       - Groups
+ *
+ *     security:
+ *       - bearerAuth: []
+ *
+ *     responses:
+ *       200:
+ *         description: Groups fetched successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 success:
+ *                   type: boolean
+ *                   example: true
+ *                 message:
+ *                   type: string
+ *                   example: Groups fetched successfully
+ *                 data:
+ *                   type: array
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                         example: 6a833cf96842ff613a14ad2c
+ *                       groupId:
+ *                         type: object
+ *                         properties:
+ *                           _id:
+ *                             type: string
+ *                             example: 6a833cf96842ff613a14ad2c
+ *                           name:
+ *                             type: string
+ *                             example: Goa Trip
+ *                           currency:
+ *                             type: string
+ *                             example: INR
+ *                           ownerId:
+ *                             type: string
+ *                             example: 6a8339286842ff613a14ad2b
+ *                       userId:
+ *                         type: string
+ *                         example: 6a8339286842ff613a14ad2b
+ *                       role:
+ *                         type: string
+ *                         example: ADMIN
+ *                       status:
+ *                         type: string
+ *                         example: ACTIVE
+ *
+ *       401:
+ *         description: Authentication required
+ */
+router.get("/", authenticate, getGroups);
 
 /**
  * @openapi
