@@ -32,7 +32,7 @@ function GroupDetails() {
   const [error, setError] = useState("");
 
   const navigate = useNavigate();
-  
+
   const getConfig = () => {
     const token = localStorage.getItem("token");
 
@@ -587,7 +587,7 @@ function GroupDetails() {
       <hr />
 
       {/* EXPENSES */}
-
+      
       <h2>Expenses</h2>
 
       {expenses.length === 0 ? (
@@ -617,6 +617,14 @@ function GroupDetails() {
         ))}
         </ul>
       )}
+
+      <button
+      onClick={() =>
+        navigate(`/groups/${groupsId}/summary`)
+      }
+      >
+      View Summary
+    </button>
     </div>
   );
 }

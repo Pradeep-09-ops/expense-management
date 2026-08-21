@@ -7,6 +7,7 @@ import GroupDetails from "./pages/GroupDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import ExpenseDetails from "./pages/ExpenseDetails";
+import GroupSummary from "./pages/GroupSummary";
 
 function App() {
   return (
@@ -43,6 +44,10 @@ function App() {
             </ProtectedRoute>
           }
         />
+       <Route
+          path="/groups/:groupId/summary"
+          element={<GroupSummary />}
+      />
       </Routes>
 
     </BrowserRouter>
