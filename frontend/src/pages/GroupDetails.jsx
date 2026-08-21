@@ -344,17 +344,17 @@ function GroupDetails() {
     <div>
       <h1>{group.name}</h1>
 
-      <p>
+      {/* <p>
         <strong>Group ID:</strong> {group._id}
-      </p>
+      </p> */}
 
       <p>
         <strong>Currency:</strong> {group.currency}
       </p>
 
-      <p>
+      {/* <p>
         <strong>Owner ID:</strong> {group.ownerId}
-      </p>
+      </p> */}
 
       <hr />
 
@@ -391,6 +391,7 @@ function GroupDetails() {
           value={userId}
           onChange={(e) => setUserId(e.target.value)}
         />
+        &nbsp; &nbsp; &nbsp;
 
         <button type="submit" disabled={addingMember}>
           {addingMember ? "Adding..." : "Add Member"}
@@ -625,7 +626,7 @@ function GroupDetails() {
       >
       View Summary
     </button>
-
+      &nbsp; &nbsp; &nbsp;
   <button
     onClick={() =>
       navigate(`/groups/${groupsId}/settlement`)

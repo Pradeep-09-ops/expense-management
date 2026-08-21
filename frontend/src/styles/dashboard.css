@@ -1,0 +1,636 @@
+/* ==============================
+   DASHBOARD PAGE
+================================ */
+
+.dashboard-page {
+  min-height: calc(100vh - 70px);
+
+  background: #f5f7fb;
+
+  padding: 45px 20px 70px;
+}
+
+.dashboard-container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+}
+
+
+/* ==============================
+   DASHBOARD HEADER
+================================ */
+
+.dashboard-header {
+  margin-bottom: 32px;
+}
+
+.dashboard-label {
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 7px;
+}
+
+.dashboard-header h1 {
+  font-size: 36px;
+  font-weight: 750;
+
+  color: #111827;
+
+  margin-bottom: 5px;
+}
+
+.dashboard-welcome {
+  color: #6b7280;
+
+  font-size: 16px;
+}
+
+.dashboard-welcome span {
+  color: #111827;
+
+  font-weight: 600;
+}
+
+
+/* ==============================
+   CREATE GROUP CARD
+================================ */
+
+.create-group-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+  border-radius: 18px;
+
+  padding: 28px 32px;
+
+  margin-bottom: 42px;
+
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
+}
+
+
+/* ==============================
+   CREATE GROUP HEADER
+================================ */
+
+.create-group-heading {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 26px;
+}
+
+.create-group-heading h2 {
+  font-size: 20px;
+  font-weight: 700;
+
+  color: #111827;
+
+  margin-bottom: 5px;
+}
+
+.create-group-heading p {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   CREATE GROUP ICON
+================================ */
+
+.create-group-icon {
+  width: 46px;
+  height: 46px;
+
+  border-radius: 13px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+  font-weight: 500;
+
+  flex-shrink: 0;
+}
+
+
+/* ==============================
+   CREATE GROUP FORM
+================================ */
+
+.create-group-card form {
+  display: grid;
+
+  grid-template-columns:
+    minmax(0, 1.6fr)
+    minmax(150px, 0.8fr)
+    auto;
+
+  align-items: end;
+
+  gap: 16px;
+
+  padding: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 13px;
+}
+
+
+/* ==============================
+   FORM HEADING
+================================ */
+
+.create-group-card form h3 {
+  grid-column: 1 / -1;
+
+  color: #374151;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  margin-bottom: -2px;
+}
+
+
+/* ==============================
+   FORM LABEL
+================================ */
+
+.create-group-card form label {
+  display: block;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  margin-bottom: 7px;
+}
+
+
+/* ==============================
+   FORM INPUTS
+================================ */
+
+.create-group-card form input,
+.create-group-card form select {
+  width: 100%;
+  max-width: none;
+
+  height: 44px;
+
+  padding: 10px 13px;
+
+  background: #ffffff;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  color: #111827;
+
+  outline: none;
+
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.create-group-card form input::placeholder {
+  color: #9ca3af;
+}
+
+.create-group-card form input:focus,
+.create-group-card form select:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+
+/* ==============================
+   CREATE BUTTON
+================================ */
+
+.create-group-card form button {
+  height: 44px;
+
+  padding: 0 20px;
+
+  white-space: nowrap;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition:
+    background 0.2s ease,
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.create-group-card form button:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.18);
+}
+
+.create-group-card form button:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+
+  transform: none;
+
+  box-shadow: none;
+}
+
+
+/* ==============================
+   GROUP SECTION
+================================ */
+
+.groups-section {
+  margin-top: 10px;
+}
+
+.groups-heading {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.groups-heading h2 {
+  font-size: 23px;
+
+  color: #111827;
+
+  margin-bottom: 3px;
+}
+
+.groups-heading p {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.group-count {
+  background: #eaf2ff;
+
+  color: #2563eb;
+
+  border-radius: 20px;
+
+  padding: 7px 13px;
+
+  font-size: 13px;
+
+  font-weight: 600;
+}
+
+
+/* ==============================
+   GROUP GRID
+================================ */
+
+.group-grid {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 20px;
+}
+
+
+/* ==============================
+   GROUP CARD
+================================ */
+
+.group-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  padding: 22px;
+
+  cursor: pointer;
+
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.03);
+
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.group-card:hover {
+  transform: translateY(-4px);
+
+  border-color: #bfdbfe;
+
+  box-shadow:
+    0 12px 28px rgba(37, 99, 235, 0.10);
+}
+
+
+/* ==============================
+   GROUP CARD TOP
+================================ */
+
+.group-card-top {
+  display: flex;
+
+  justify-content: space-between;
+  align-items: center;
+
+  margin-bottom: 20px;
+}
+
+
+/* ==============================
+   GROUP ICON
+================================ */
+
+.group-icon {
+  width: 48px;
+  height: 48px;
+
+  border-radius: 13px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+
+/* ==============================
+   ROLE BADGE
+================================ */
+
+.role-badge {
+  padding: 5px 10px;
+
+  border-radius: 20px;
+
+  background: #f3f4f6;
+
+  color: #6b7280;
+
+  font-size: 11px;
+  font-weight: 700;
+
+  letter-spacing: 0.3px;
+}
+
+.role-badge.admin {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+
+/* ==============================
+   GROUP CONTENT
+================================ */
+
+.group-card h3 {
+  font-size: 19px;
+
+  color: #111827;
+
+  margin-bottom: 6px;
+}
+
+.group-currency {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.group-currency strong {
+  color: #374151;
+}
+
+
+/* ==============================
+   CARD FOOTER
+================================ */
+
+.group-card-footer {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-top: 22px;
+
+  padding-top: 14px;
+
+  border-top: 1px solid #f0f0f0;
+
+  color: #2563eb;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.arrow {
+  font-size: 18px;
+
+  transition: transform 0.2s ease;
+}
+
+.group-card:hover .arrow {
+  transform: translateX(4px);
+}
+
+
+/* ==============================
+   EMPTY STATE
+================================ */
+
+.empty-state {
+  background: #ffffff;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 16px;
+
+  padding: 65px 20px;
+
+  text-align: center;
+}
+
+.empty-state-icon {
+  font-size: 42px;
+
+  margin-bottom: 12px;
+}
+
+.empty-state h3 {
+  font-size: 18px;
+
+  color: #111827;
+
+  margin-bottom: 5px;
+}
+
+.empty-state p {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   ERROR
+================================ */
+
+.error-message {
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #b91c1c;
+
+  padding: 12px 16px;
+
+  border-radius: 9px;
+
+  margin-bottom: 25px;
+}
+
+
+/* ==============================
+   LOADING
+================================ */
+
+.loading-screen {
+  min-height: 80vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+
+  font-size: 18px;
+}
+
+
+/* ==============================
+   RESPONSIVE - TABLET
+================================ */
+
+@media (max-width: 900px) {
+
+  .group-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .create-group-card form {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .create-group-card form button {
+    width: 100%;
+  }
+}
+
+
+/* ==============================
+   RESPONSIVE - MOBILE
+================================ */
+
+@media (max-width: 600px) {
+
+  .dashboard-page {
+    padding: 30px 15px 50px;
+  }
+
+  .dashboard-header h1 {
+    font-size: 30px;
+  }
+
+  .create-group-card {
+    padding: 22px 18px;
+  }
+
+  .create-group-heading {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .create-group-heading h2 {
+    font-size: 19px;
+  }
+
+  .create-group-card form {
+    grid-template-columns: 1fr;
+
+    padding: 16px;
+  }
+
+  .create-group-card form h3 {
+    grid-column: auto;
+  }
+
+  .create-group-card form button {
+    width: 100%;
+  }
+
+  .group-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .groups-heading {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+}
