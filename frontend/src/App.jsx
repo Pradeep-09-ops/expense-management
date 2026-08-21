@@ -8,6 +8,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 import ExpenseDetails from "./pages/ExpenseDetails";
 import GroupSummary from "./pages/GroupSummary";
+import GroupSettlement from "./pages/GroupSettlement";
 
 function App() {
   return (
@@ -47,6 +48,10 @@ function App() {
        <Route
           path="/groups/:groupId/summary"
           element={<GroupSummary />}
+      />
+      <Route
+        path="/groups/:groupId/settlement"
+        element={<GroupSettlement />}
       />
       </Routes>
 

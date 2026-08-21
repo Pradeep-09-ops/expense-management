@@ -625,6 +625,14 @@ function GroupDetails() {
       >
       View Summary
     </button>
+
+  <button
+    onClick={() =>
+      navigate(`/groups/${groupsId}/settlement`)
+    }
+  >
+  View Settlement
+  </button>
     </div>
   );
 }
