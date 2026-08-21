@@ -6,6 +6,7 @@ import DashBoard from "./pages/DashBoard";
 import GroupDetails from "./pages/GroupDetails";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
+import ExpenseDetails from "./pages/ExpenseDetails";
 
 function App() {
   return (
@@ -33,7 +34,17 @@ function App() {
             </ProtectedRoute>
           }
         />
+
+      <Route
+          path="/expenses/:expenseId"
+          element={
+            <ProtectedRoute>
+              <ExpenseDetails />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
+
     </BrowserRouter>
   );
 }

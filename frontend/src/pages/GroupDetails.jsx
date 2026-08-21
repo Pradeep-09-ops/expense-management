@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 function GroupDetails() {
@@ -30,6 +31,8 @@ function GroupDetails() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+  const navigate = useNavigate();
+  
   const getConfig = () => {
     const token = localStorage.getItem("token");
 
@@ -592,20 +595,26 @@ function GroupDetails() {
       ) : (
         <ul>
           {expenses.map((expense) => (
-            <li key={expense._id}>
-              <strong>
-                {expense.description}
-              </strong>
+          <li
+            key={expense._id}
+            onClick={() =>
+              navigate(`/expenses/${expense._id}`)
+            }
+            style={{ cursor: "pointer" }}
+          >
+            <strong>
+              {expense.description}
+            </strong>
 
-              {" — "}
+            {" — "}
 
-              {group.currency} {expense.amount}
+            {group.currency} {expense.amount}
 
-              {" — Paid by: "}
+            {" — Paid by: "}
 
-              {expense.paidBy?.name}
-            </li>
-          ))}
+            {expense.paidBy?.name}
+          </li>
+        ))}
         </ul>
       )}
     </div>
