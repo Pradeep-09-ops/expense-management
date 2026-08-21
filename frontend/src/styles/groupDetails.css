@@ -1,0 +1,802 @@
+/* ==============================
+   GROUP DETAILS PAGE
+================================ */
+
+.group-details-page {
+  min-height: calc(100vh - 70px);
+
+  background: #f5f7fb;
+
+  padding: 40px 20px 70px;
+}
+
+.group-details-container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+}
+
+
+/* ==============================
+   GROUP HEADER
+================================ */
+
+.group-details-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 28px;
+}
+
+.group-details-header-left {
+  display: flex;
+  align-items: center;
+
+  gap: 16px;
+}
+
+.group-details-icon {
+  width: 58px;
+  height: 58px;
+
+  border-radius: 15px;
+
+  background: #eff6ff;
+  color: #2563eb;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 25px;
+  font-weight: 700;
+}
+
+.group-details-header h1 {
+  font-size: 30px;
+  font-weight: 750;
+
+  color: #111827;
+
+  margin-bottom: 3px;
+}
+
+.group-details-currency {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.group-details-currency strong {
+  color: #374151;
+}
+
+
+/* ==============================
+   BACK BUTTON
+================================ */
+
+.group-back-button {
+  background: #ffffff;
+
+  color: #374151;
+
+  border: 1px solid #d1d5db;
+  border-radius: 9px;
+
+  padding: 9px 14px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.group-back-button:hover {
+  background: #f9fafb;
+
+  border-color: #9ca3af;
+
+  color: #111827;
+
+  transform: translateY(-1px);
+}
+
+
+/* ==============================
+   COMMON CARD
+================================ */
+
+.details-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  padding: 26px 28px;
+
+  margin-bottom: 24px;
+
+  box-shadow:
+    0 4px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* ==============================
+   CARD HEADER
+================================ */
+
+.details-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 20px;
+}
+
+.details-card-title h2 {
+  font-size: 20px;
+
+  color: #111827;
+
+  margin-bottom: 4px;
+}
+
+.details-card-title p {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   COUNT BADGE
+================================ */
+
+.details-count {
+  background: #eaf2ff;
+
+  color: #2563eb;
+
+  border-radius: 20px;
+
+  padding: 6px 12px;
+
+  font-size: 12px;
+  font-weight: 700;
+}
+
+
+/* ==============================
+   MEMBERS
+================================ */
+
+.members-list {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 12px;
+}
+
+.member-item {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  padding: 13px 14px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 11px;
+}
+
+.member-avatar {
+  width: 38px;
+  height: 38px;
+
+  border-radius: 10px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.member-info {
+  min-width: 0;
+}
+
+.member-name {
+  color: #111827;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  margin-bottom: 2px;
+}
+
+.member-email {
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+.member-role {
+  margin-left: auto;
+
+  padding: 4px 8px;
+
+  border-radius: 20px;
+
+  background: #f3f4f6;
+
+  color: #6b7280;
+
+  font-size: 10px;
+  font-weight: 700;
+}
+
+.member-role.admin {
+  background: #dcfce7;
+
+  color: #15803d;
+}
+
+
+/* ==============================
+   EMPTY MEMBERS
+================================ */
+
+.members-empty {
+  padding: 30px;
+
+  text-align: center;
+
+  color: #6b7280;
+
+  background: #f8fafc;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 11px;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   ADD MEMBER
+================================ */
+
+.add-member-form {
+  display: flex;
+
+  align-items: flex-end;
+
+  gap: 12px;
+}
+
+.add-member-field {
+  flex: 1;
+}
+
+.add-member-field label {
+  display: block;
+
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  margin-bottom: 7px;
+}
+
+.add-member-field input {
+  width: 100%;
+  max-width: none;
+
+  height: 44px;
+
+  padding: 10px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  outline: none;
+
+  background: #ffffff;
+
+  transition: 0.2s ease;
+}
+
+.add-member-field input:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+.add-member-button {
+  height: 44px;
+
+  padding: 0 20px;
+
+  white-space: nowrap;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+}
+
+
+/* ==============================
+   EXPENSE FORM
+================================ */
+
+.expense-form {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 18px;
+}
+
+.expense-field {
+  display: flex;
+
+  flex-direction: column;
+}
+
+.expense-field.full-width {
+  grid-column: 1 / -1;
+}
+
+.expense-field label {
+  color: #374151;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  margin-bottom: 7px;
+}
+
+.expense-field input,
+.expense-field select {
+  width: 100%;
+  max-width: none;
+
+  height: 44px;
+
+  padding: 10px 13px;
+
+  border: 1px solid #d1d5db;
+
+  border-radius: 9px;
+
+  background: #ffffff;
+
+  color: #111827;
+
+  outline: none;
+
+  transition: 0.2s ease;
+}
+
+.expense-field input:focus,
+.expense-field select:focus {
+  border-color: #2563eb;
+
+  box-shadow:
+    0 0 0 3px rgba(37, 99, 235, 0.09);
+}
+
+
+/* ==============================
+   SPLIT MEMBERS
+================================ */
+
+.split-section {
+  grid-column: 1 / -1;
+
+  padding: 18px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 12px;
+}
+
+.split-section-title {
+  color: #374151;
+
+  font-size: 14px;
+  font-weight: 700;
+
+  margin-bottom: 12px;
+}
+
+.split-member-list {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 10px;
+}
+
+.split-member {
+  display: flex;
+
+  align-items: center;
+
+  gap: 9px;
+
+  padding: 10px 12px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 9px;
+}
+
+.split-member input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+
+  accent-color: #2563eb;
+}
+
+.split-member label {
+  color: #374151;
+
+  font-size: 13px;
+
+  cursor: pointer;
+}
+
+.split-value-input {
+  margin-left: auto;
+
+  width: 100px !important;
+
+  height: 34px !important;
+
+  padding: 6px 9px !important;
+}
+
+
+/* ==============================
+   EXPENSE SUBMIT
+================================ */
+
+.expense-submit {
+  grid-column: 1 / -1;
+
+  display: flex;
+
+  justify-content: flex-end;
+
+  margin-top: 4px;
+}
+
+.create-expense-button {
+  padding: 11px 22px;
+
+  border-radius: 9px;
+
+  background: #2563eb;
+
+  color: #ffffff;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.create-expense-button:hover {
+  background: #1d4ed8;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 12px rgba(37, 99, 235, 0.18);
+}
+
+
+/* ==============================
+   EXPENSE LIST
+================================ */
+
+.expense-list {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 10px;
+}
+
+.expense-item {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 15px 16px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 11px;
+
+  cursor: pointer;
+
+  transition: 0.2s ease;
+}
+
+.expense-item:hover {
+  background: #ffffff;
+
+  border-color: #bfdbfe;
+
+  transform: translateY(-1px);
+
+  box-shadow:
+    0 5px 14px rgba(37, 99, 235, 0.07);
+}
+
+.expense-info h3 {
+  font-size: 15px;
+
+  color: #111827;
+
+  margin-bottom: 3px;
+}
+
+.expense-paid-by {
+  color: #6b7280;
+
+  font-size: 12px;
+}
+
+.expense-amount {
+  color: #111827;
+
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.expense-arrow {
+  color: #2563eb;
+
+  font-size: 18px;
+
+  margin-left: 14px;
+}
+
+
+/* ==============================
+   EMPTY EXPENSES
+================================ */
+
+.expenses-empty {
+  padding: 35px 20px;
+
+  text-align: center;
+
+  color: #6b7280;
+
+  background: #f8fafc;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 11px;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   SUCCESS / ERROR
+================================ */
+
+.group-success {
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #15803d;
+
+  padding: 10px 13px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  margin-top: 14px;
+}
+
+.group-error {
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #b91c1c;
+
+  padding: 10px 13px;
+
+  border-radius: 9px;
+
+  font-size: 13px;
+
+  margin-top: 14px;
+}
+
+
+/* ==============================
+   GROUP ACTIONS
+================================ */
+
+.group-actions {
+  display: flex;
+
+  gap: 12px;
+
+  margin-top: 8px;
+}
+
+.group-action-button {
+  flex: 1;
+
+  padding: 12px 18px;
+
+  border-radius: 10px;
+
+  background: #ffffff;
+
+  color: #2563eb;
+
+  border: 1px solid #bfdbfe;
+
+  font-size: 14px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.group-action-button:hover {
+  background: #eff6ff;
+
+  border-color: #93c5fd;
+
+  transform: translateY(-1px);
+}
+
+
+/* ==============================
+   LOADING / ERROR
+================================ */
+
+.group-details-loading,
+.group-details-error {
+  min-height: 70vh;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  color: #6b7280;
+
+  font-size: 18px;
+}
+
+.group-details-error {
+  color: #b91c1c;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 800px) {
+
+  .members-list {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-form {
+    grid-template-columns: 1fr;
+  }
+
+  .expense-field.full-width,
+  .split-section,
+  .expense-submit {
+    grid-column: auto;
+  }
+
+  .split-member-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .group-details-page {
+    padding: 30px 15px 50px;
+  }
+
+  .details-card {
+    padding: 20px;
+  }
+
+  .group-details-header {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .group-details-header-left {
+    gap: 10px;
+  }
+
+  .group-details-icon {
+    width: 48px;
+    height: 48px;
+
+    font-size: 20px;
+  }
+
+  .group-details-header h1 {
+    font-size: 25px;
+  }
+
+  .add-member-form {
+    flex-direction: column;
+
+    align-items: stretch;
+  }
+
+  .add-member-button {
+    width: 100%;
+  }
+
+  .group-actions {
+    flex-direction: column;
+  }
+
+  .group-action-button {
+    width: 100%;
+  }
+
+  .expense-item {
+    padding: 13px;
+  }
+}

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import "../styles/groupDetails.css";
 
 function GroupDetails() {
   const { groupsId } = useParams();
@@ -341,301 +341,498 @@ function GroupDetails() {
   // ---------------- UI ----------------
 
   return (
-    <div>
-      <h1>{group.name}</h1>
+  <div className="group-details-page">
+    <div className="group-details-container">
 
-      {/* <p>
-        <strong>Group ID:</strong> {group._id}
-      </p> */}
+      {/* ==============================
+          GROUP HEADER
+      ============================== */}
 
-      <p>
-        <strong>Currency:</strong> {group.currency}
-      </p>
+      <section className="group-details-header">
+        <div className="group-details-header-left">
 
-      {/* <p>
-        <strong>Owner ID:</strong> {group.ownerId}
-      </p> */}
+          <div className="group-details-icon">
+            {group.name.charAt(0).toUpperCase()}
+          </div>
 
-      <hr />
+          <div>
+            <h1>{group.name}</h1>
 
-      {/* MEMBERS */}
+            <p className="group-details-currency">
+              Currency: <strong>{group.currency}</strong>
+            </p>
+          </div>
 
-      <h2>Members</h2>
-
-      {members.length === 0 ? (
-        <p>No members found.</p>
-      ) : (
-        <ul>
-          {members.map((member) => (
-            <li key={member._id}>
-              <strong>{member.userId.name}</strong>
-              {" — "}
-              {member.userId.email}
-              {" — "}
-              {member.role}
-            </li>
-          ))}
-        </ul>
-      )}
-
-      <hr />
-
-      {/* ADD MEMBER */}
-
-      <h2>Add Member</h2>
-
-      <form onSubmit={handleAddMember}>
-        <input
-          type="text"
-          placeholder="Enter User ID"
-          value={userId}
-          onChange={(e) => setUserId(e.target.value)}
-        />
-        &nbsp; &nbsp; &nbsp;
-
-        <button type="submit" disabled={addingMember}>
-          {addingMember ? "Adding..." : "Add Member"}
-        </button>
-      </form>
-
-      {memberSuccess && (
-        <p style={{ color: "green" }}>
-          {memberSuccess}
-        </p>
-      )}
-
-      {memberError && (
-        <p style={{ color: "red" }}>
-          {memberError}
-        </p>
-      )}
-
-      <hr />
-
-      {/* ADD EXPENSE */}
-
-      <h2>Add Expense</h2>
-
-      <form onSubmit={handleCreateExpense}>
-        {/* AMOUNT */}
-
-        <div>
-          <label>Amount</label>
-          <br />
-
-          <input
-            type="number"
-            min="0.01"
-            step="0.01"
-            placeholder="Enter amount"
-            value={amount}
-            onChange={(e) => setAmount(e.target.value)}
-          />
         </div>
-
-        <br />
-
-        {/* DESCRIPTION */}
-
-        <div>
-          <label>Description</label>
-          <br />
-
-          <input
-            type="text"
-            placeholder="e.g. Hotel"
-            value={description}
-            onChange={(e) =>
-              setDescription(e.target.value)
-            }
-          />
-        </div>
-
-        <br />
-
-        {/* PAID BY */}
-
-        <div>
-          <label>Paid By</label>
-          <br />
-
-          <select
-            value={paidBy}
-            onChange={(e) => setPaidBy(e.target.value)}
-          >
-            <option value="">
-              Select member
-            </option>
-
-            {members.map((member) => (
-              <option
-                key={member.userId._id}
-                value={member.userId._id}
-              >
-                {member.userId.name}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <br />
-
-        {/* SPLIT TYPE */}
-
-        <div>
-          <label>Split Type</label>
-          <br />
-
-          <select
-            value={splitType}
-            onChange={handleSplitTypeChange}
-          >
-            <option value="EQUAL">
-              Equal
-            </option>
-
-            <option value="EXACT">
-              Exact Amount
-            </option>
-
-            <option value="PERCENTAGE">
-              Percentage
-            </option>
-          </select>
-        </div>
-
-        <br />
-
-        {/* SPLIT BETWEEN */}
-
-        <div>
-          <label>Split Between</label>
-
-          {members.map((member) => {
-            const memberId = member.userId._id;
-
-            const isSelected =
-              selectedMembers.includes(memberId);
-
-            return (
-              <div key={memberId}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={isSelected}
-                    onChange={() =>
-                      handleMemberSelection(memberId)
-                    }
-                  />
-
-                  {" "}
-                  {member.userId.name}
-                </label>
-
-                {/* EXACT / PERCENTAGE INPUT */}
-
-                {isSelected &&
-                  splitType !== "EQUAL" && (
-                    <input
-                      type="number"
-                      min="0"
-                      step="0.01"
-                      placeholder={
-                        splitType === "EXACT"
-                          ? "Amount"
-                          : "Percentage"
-                      }
-                      value={
-                        splitValues[memberId] ?? ""
-                      }
-                      onChange={(e) =>
-                        handleSplitValueChange(
-                          memberId,
-                          e.target.value
-                        )
-                      }
-                    />
-                  )}
-              </div>
-            );
-          })}
-        </div>
-
-        <br />
 
         <button
-          type="submit"
-          disabled={creatingExpense}
+          className="group-back-button"
+          onClick={() => navigate("/dashboard")}
         >
-          {creatingExpense
-            ? "Creating..."
-            : "Create Expense"}
+          ← Dashboard
         </button>
-      </form>
+      </section>
 
-      {expenseSuccess && (
-        <p style={{ color: "green" }}>
-          {expenseSuccess}
-        </p>
-      )}
 
-      {expenseError && (
-        <p style={{ color: "red" }}>
-          {expenseError}
-        </p>
-      )}
+      {/* ==============================
+          MEMBERS
+      ============================== */}
 
-      <hr />
+      <section className="details-card">
 
-      {/* EXPENSES */}
-      
-      <h2>Expenses</h2>
+        <div className="details-card-header">
+          <div className="details-card-title">
+            <h2>Members</h2>
 
-      {expenses.length === 0 ? (
-        <p>No expenses found.</p>
-      ) : (
-        <ul>
-          {expenses.map((expense) => (
-          <li
-            key={expense._id}
-            onClick={() =>
-              navigate(`/expenses/${expense._id}`)
-            }
-            style={{ cursor: "pointer" }}
+            <p>
+              People included in this group.
+            </p>
+          </div>
+
+          <span className="details-count">
+            {members.length} Members
+          </span>
+        </div>
+
+        {members.length === 0 ? (
+          <div className="members-empty">
+            No members found.
+          </div>
+        ) : (
+          <div className="members-list">
+
+            {members.map((member) => (
+              <div
+                className="member-item"
+                key={member._id}
+              >
+
+                <div className="member-avatar">
+                  {member.userId.name
+                    .charAt(0)
+                    .toUpperCase()}
+                </div>
+
+                <div className="member-info">
+
+                  <p className="member-name">
+                    {member.userId.name}
+                  </p>
+
+                  <p className="member-email">
+                    {member.userId.email}
+                  </p>
+
+                </div>
+
+                <span
+                  className={`member-role ${
+                    member.role === "ADMIN"
+                      ? "admin"
+                      : ""
+                  }`}
+                >
+                  {member.role}
+                </span>
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
+      </section>
+
+
+      {/* ==============================
+          ADD MEMBER
+      ============================== */}
+
+      <section className="details-card">
+
+        <div className="details-card-header">
+          <div className="details-card-title">
+            <h2>Add Member</h2>
+
+            <p>
+              Add another user to this group.
+            </p>
+          </div>
+        </div>
+
+        <form
+          className="add-member-form"
+          onSubmit={handleAddMember}
+        >
+
+          <div className="add-member-field">
+            <label htmlFor="userId">
+              User ID
+            </label>
+
+            <input
+              id="userId"
+              type="text"
+              placeholder="Enter User ID"
+              value={userId}
+              onChange={(e) =>
+                setUserId(e.target.value)
+              }
+            />
+          </div>
+
+          <button
+            type="submit"
+            className="add-member-button"
+            disabled={addingMember}
           >
-            <strong>
-              {expense.description}
-            </strong>
+            {addingMember
+              ? "Adding..."
+              : "Add Member"}
+          </button>
 
-            {" — "}
+        </form>
 
-            {group.currency} {expense.amount}
+        {memberSuccess && (
+          <p className="group-success">
+            {memberSuccess}
+          </p>
+        )}
 
-            {" — Paid by: "}
+        {memberError && (
+          <p className="group-error">
+            {memberError}
+          </p>
+        )}
 
-            {expense.paidBy?.name}
-          </li>
-        ))}
-        </ul>
-      )}
+      </section>
 
-      <button
-      onClick={() =>
-        navigate(`/groups/${groupsId}/summary`)
-      }
-      >
-      View Summary
-    </button>
-      &nbsp; &nbsp; &nbsp;
-  <button
-    onClick={() =>
-      navigate(`/groups/${groupsId}/settlement`)
-    }
-  >
-  View Settlement
-  </button>
+
+      {/* ==============================
+          ADD EXPENSE
+      ============================== */}
+
+      <section className="details-card">
+
+        <div className="details-card-header">
+          <div className="details-card-title">
+            <h2>Add Expense</h2>
+
+            <p>
+              Record and split a shared expense.
+            </p>
+          </div>
+        </div>
+
+        <form
+          className="expense-form"
+          onSubmit={handleCreateExpense}
+        >
+
+          {/* Amount */}
+
+          <div className="expense-field">
+            <label htmlFor="amount">
+              Amount
+            </label>
+
+            <input
+              id="amount"
+              type="number"
+              min="0.01"
+              step="0.01"
+              placeholder="Enter amount"
+              value={amount}
+              onChange={(e) =>
+                setAmount(e.target.value)
+              }
+            />
+          </div>
+
+
+          {/* Description */}
+
+          <div className="expense-field">
+            <label htmlFor="description">
+              Description
+            </label>
+
+            <input
+              id="description"
+              type="text"
+              placeholder="e.g. Hotel"
+              value={description}
+              onChange={(e) =>
+                setDescription(e.target.value)
+              }
+            />
+          </div>
+
+
+          {/* Paid By */}
+
+          <div className="expense-field">
+            <label htmlFor="paidBy">
+              Paid By
+            </label>
+
+            <select
+              id="paidBy"
+              value={paidBy}
+              onChange={(e) =>
+                setPaidBy(e.target.value)
+              }
+            >
+              <option value="">
+                Select member
+              </option>
+
+              {members.map((member) => (
+                <option
+                  key={member.userId._id}
+                  value={member.userId._id}
+                >
+                  {member.userId.name}
+                </option>
+              ))}
+            </select>
+          </div>
+
+
+          {/* Split Type */}
+
+          <div className="expense-field">
+            <label htmlFor="splitType">
+              Split Type
+            </label>
+
+            <select
+              id="splitType"
+              value={splitType}
+              onChange={handleSplitTypeChange}
+            >
+              <option value="EQUAL">
+                Equal
+              </option>
+
+              <option value="EXACT">
+                Exact Amount
+              </option>
+
+              <option value="PERCENTAGE">
+                Percentage
+              </option>
+            </select>
+          </div>
+
+
+          {/* Split Between */}
+
+          <div className="split-section">
+
+            <p className="split-section-title">
+              Split Between
+            </p>
+
+            <div className="split-member-list">
+
+              {members.map((member) => {
+
+                const memberId =
+                  member.userId._id;
+
+                const isSelected =
+                  selectedMembers.includes(memberId);
+
+                return (
+                  <div
+                    className="split-member"
+                    key={memberId}
+                  >
+
+                    <input
+                      id={`member-${memberId}`}
+                      type="checkbox"
+                      checked={isSelected}
+                      onChange={() =>
+                        handleMemberSelection(memberId)
+                      }
+                    />
+
+                    <label
+                      htmlFor={`member-${memberId}`}
+                    >
+                      {member.userId.name}
+                    </label>
+
+                    {isSelected &&
+                      splitType !== "EQUAL" && (
+                        <input
+                          className="split-value-input"
+                          type="number"
+                          min="0"
+                          step="0.01"
+                          placeholder={
+                            splitType === "EXACT"
+                              ? "Amount"
+                              : "Percentage"
+                          }
+                          value={
+                            splitValues[memberId] ?? ""
+                          }
+                          onChange={(e) =>
+                            handleSplitValueChange(
+                              memberId,
+                              e.target.value
+                            )
+                          }
+                        />
+                      )}
+
+                  </div>
+                );
+              })}
+
+            </div>
+
+          </div>
+
+
+          {/* Create Expense */}
+
+          <div className="expense-submit">
+
+            <button
+              type="submit"
+              className="create-expense-button"
+              disabled={creatingExpense}
+            >
+              {creatingExpense
+                ? "Creating..."
+                : "Create Expense"}
+            </button>
+
+          </div>
+
+        </form>
+
+        {expenseSuccess && (
+          <p className="group-success">
+            {expenseSuccess}
+          </p>
+        )}
+
+        {expenseError && (
+          <p className="group-error">
+            {expenseError}
+          </p>
+        )}
+
+      </section>
+
+
+      {/* ==============================
+          EXPENSES
+      ============================== */}
+
+      <section className="details-card">
+
+        <div className="details-card-header">
+          <div className="details-card-title">
+            <h2>Expenses</h2>
+
+            <p>
+              All expenses recorded in this group.
+            </p>
+          </div>
+
+          <span className="details-count">
+            {expenses.length} Expenses
+          </span>
+        </div>
+
+        {expenses.length === 0 ? (
+          <div className="expenses-empty">
+            No expenses found.
+          </div>
+        ) : (
+          <div className="expense-list">
+
+            {expenses.map((expense) => (
+              <div
+                className="expense-item"
+                key={expense._id}
+                onClick={() =>
+                  navigate(
+                    `/expenses/${expense._id}`
+                  )
+                }
+              >
+
+                <div className="expense-info">
+
+                  <h3>
+                    {expense.description}
+                  </h3>
+
+                  <p className="expense-paid-by">
+                    Paid by {expense.paidBy?.name}
+                  </p>
+
+                </div>
+
+                <div>
+                  <span className="expense-amount">
+                    {group.currency} {expense.amount}
+                  </span>
+
+                  <span className="expense-arrow">
+                    →
+                  </span>
+                </div>
+
+              </div>
+            ))}
+
+          </div>
+        )}
+
+      </section>
+
+
+      {/* ==============================
+          GROUP ACTIONS
+      ============================== */}
+
+      <div className="group-actions">
+
+        <button
+          className="group-action-button"
+          onClick={() =>
+            navigate(
+              `/groups/${groupsId}/summary`
+            )
+          }
+        >
+          View Summary
+        </button>
+
+        <button
+          className="group-action-button"
+          onClick={() =>
+            navigate(
+              `/groups/${groupsId}/settlement`
+            )
+          }
+        >
+          View Settlement
+        </button>
+
+      </div>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default GroupDetails;
