@@ -1,0 +1,460 @@
+/* ==============================
+   SUMMARY PAGE
+================================ */
+
+.summary-page {
+  min-height: calc(100vh - 70px);
+
+  background: #f5f7fb;
+
+  padding: 40px 20px 70px;
+}
+
+.summary-container {
+  width: 100%;
+  max-width: 1100px;
+
+  margin: 0 auto;
+}
+
+
+/* ==============================
+   HEADER
+================================ */
+
+.summary-header {
+  margin-bottom: 28px;
+}
+
+.summary-back-button {
+  margin-bottom: 22px;
+
+  padding: 8px 13px;
+
+  background: #ffffff;
+
+  color: #374151;
+
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+
+  font-size: 13px;
+  font-weight: 600;
+
+  transition: 0.2s ease;
+}
+
+.summary-back-button:hover {
+  background: #f9fafb;
+
+  border-color: #9ca3af;
+
+  color: #111827;
+
+  transform: translateY(-1px);
+}
+
+.summary-label {
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  letter-spacing: 1.5px;
+
+  margin-bottom: 6px;
+}
+
+.summary-header h1 {
+  font-size: 32px;
+  font-weight: 750;
+
+  color: #111827;
+
+  margin-bottom: 5px;
+}
+
+.summary-subtitle {
+  color: #6b7280;
+
+  font-size: 15px;
+}
+
+
+/* ==============================
+   TOTAL EXPENSE CARD
+================================ */
+
+.total-expense-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 16px;
+
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  padding: 24px 28px;
+
+  margin-bottom: 24px;
+
+  box-shadow:
+    0 5px 18px rgba(15, 23, 42, 0.04);
+}
+
+.total-expense-icon {
+  width: 52px;
+  height: 52px;
+
+  border-radius: 14px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 21px;
+  font-weight: 700;
+}
+
+.total-expense-card p {
+  color: #6b7280;
+
+  font-size: 13px;
+
+  margin-bottom: 2px;
+}
+
+.total-expense-card h2 {
+  color: #111827;
+
+  font-size: 27px;
+  font-weight: 750;
+}
+
+
+/* ==============================
+   SUMMARY CARD
+================================ */
+
+.summary-card {
+  background: #ffffff;
+
+  border: 1px solid #e5e7eb;
+
+  border-radius: 16px;
+
+  padding: 26px 28px;
+
+  box-shadow:
+    0 4px 18px rgba(15, 23, 42, 0.035);
+}
+
+
+/* ==============================
+   SUMMARY CARD HEADER
+================================ */
+
+.summary-card-header {
+  display: flex;
+
+  align-items: center;
+  justify-content: space-between;
+
+  margin-bottom: 22px;
+}
+
+.summary-card-header h2 {
+  font-size: 20px;
+
+  color: #111827;
+
+  margin-bottom: 4px;
+}
+
+.summary-card-header p {
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+.summary-count {
+  padding: 6px 12px;
+
+  border-radius: 20px;
+
+  background: #eaf2ff;
+
+  color: #2563eb;
+
+  font-size: 12px;
+  font-weight: 700;
+
+  white-space: nowrap;
+}
+
+
+/* ==============================
+   BALANCE GRID
+================================ */
+
+.balance-grid {
+  display: grid;
+
+  grid-template-columns: repeat(2, 1fr);
+
+  gap: 16px;
+}
+
+
+/* ==============================
+   BALANCE CARD
+================================ */
+
+.balance-card {
+  padding: 20px;
+
+  background: #f8fafc;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 13px;
+
+  transition:
+    transform 0.2s ease,
+    border-color 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.balance-card:hover {
+  transform: translateY(-2px);
+
+  border-color: #bfdbfe;
+
+  box-shadow:
+    0 8px 20px rgba(37, 99, 235, 0.07);
+}
+
+
+/* ==============================
+   MEMBER HEADER
+================================ */
+
+.balance-card-header {
+  display: flex;
+
+  align-items: center;
+
+  gap: 12px;
+
+  margin-bottom: 18px;
+}
+
+.balance-avatar {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 11px;
+
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  display: flex;
+
+  align-items: center;
+  justify-content: center;
+
+  font-size: 15px;
+  font-weight: 700;
+
+  flex-shrink: 0;
+}
+
+.balance-member-info {
+  min-width: 0;
+}
+
+.balance-member-info h3 {
+  color: #111827;
+
+  font-size: 15px;
+
+  margin-bottom: 2px;
+}
+
+.balance-member-info p {
+  color: #6b7280;
+
+  font-size: 12px;
+
+  overflow: hidden;
+
+  text-overflow: ellipsis;
+
+  white-space: nowrap;
+}
+
+
+/* ==============================
+   BALANCE DETAILS
+================================ */
+
+.balance-details {
+  display: grid;
+
+  grid-template-columns: repeat(3, 1fr);
+
+  gap: 8px;
+
+  padding: 14px;
+
+  background: #ffffff;
+
+  border: 1px solid #eef2f7;
+
+  border-radius: 10px;
+}
+
+.balance-item {
+  display: flex;
+
+  flex-direction: column;
+
+  gap: 3px;
+}
+
+.balance-item span {
+  color: #9ca3af;
+
+  font-size: 10px;
+
+  font-weight: 700;
+
+  text-transform: uppercase;
+
+  letter-spacing: 0.5px;
+}
+
+.balance-item strong {
+  color: #374151;
+
+  font-size: 14px;
+}
+
+.balance-total strong {
+  color: #111827;
+}
+
+
+/* ==============================
+   BALANCE STATUS
+================================ */
+
+.balance-status {
+  margin-top: 12px;
+
+  padding: 9px 11px;
+
+  border-radius: 8px;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.balance-status.receive {
+  background: #f0fdf4;
+
+  border: 1px solid #bbf7d0;
+
+  color: #15803d;
+}
+
+.balance-status.owe {
+  background: #fef2f2;
+
+  border: 1px solid #fecaca;
+
+  color: #b91c1c;
+}
+
+.balance-status.settled {
+  background: #f3f4f6;
+
+  border: 1px solid #e5e7eb;
+
+  color: #6b7280;
+}
+
+
+/* ==============================
+   EMPTY STATE
+================================ */
+
+.summary-empty {
+  padding: 45px 20px;
+
+  text-align: center;
+
+  background: #f8fafc;
+
+  border: 1px dashed #d1d5db;
+
+  border-radius: 11px;
+
+  color: #6b7280;
+
+  font-size: 14px;
+}
+
+
+/* ==============================
+   RESPONSIVE
+================================ */
+
+@media (max-width: 800px) {
+
+  .balance-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+@media (max-width: 600px) {
+
+  .summary-page {
+    padding: 30px 15px 50px;
+  }
+
+  .summary-header h1 {
+    font-size: 28px;
+  }
+
+  .summary-card,
+  .total-expense-card {
+    padding: 20px;
+  }
+
+  .summary-card-header {
+    align-items: flex-start;
+
+    gap: 15px;
+  }
+
+  .balance-details {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .balance-total {
+    grid-column: 1 / -1;
+  }
+}

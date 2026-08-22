@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+import "../styles/groupSummary.css"
 function GroupSummary() {
   const { groupId } = useParams();
   const navigate = useNavigate();
@@ -55,74 +55,181 @@ function GroupSummary() {
   }
 
   return (
-    <div>
-      <button onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+  <div className="summary-page">
+    <div className="summary-container">
 
-      <h1>Group Summary</h1>
+      {/* ==============================
+          HEADER
+      ============================== */}
 
-      <hr />
+      <section className="summary-header">
 
-      <h2>Total Expenses</h2>
+        <button
+          className="summary-back-button"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </button>
 
-      <h3>₹{summary.totalExpenses}</h3>
+        <p className="summary-label">
+          EXPENSE MANAGEMENT
+        </p>
 
-      <hr />
+        <h1>Group Summary</h1>
 
-      <h2>Member Balances</h2>
+        <p className="summary-subtitle">
+          Overview of expenses and member balances.
+        </p>
 
-      {summary.members.length === 0 ? (
-        <p>No members found.</p>
-      ) : (
-        <ul>
-          {summary.members.map((member) => (
-            <li key={member.user._id}>
-              <h3>{member.user.name}</h3>
+      </section>
 
-              <p>
-                <strong>Email:</strong>{" "}
-                {member.user.email}
-              </p>
 
-              <p>
-                <strong>Paid:</strong>{" "}
-                ₹{member.paid}
-              </p>
+      {/* ==============================
+          TOTAL EXPENSES
+      ============================== */}
 
-              <p>
-                <strong>Owed:</strong>{" "}
-                ₹{member.owed}
-              </p>
+      <section className="total-expense-card">
 
-              <p>
-                <strong>Balance:</strong>{" "}
-                ₹{member.balance}
-              </p>
+        <div className="total-expense-icon">
+          ₹
+        </div>
 
-              {member.balance > 0 && (
-                <p style={{ color: "green" }}>
-                  Should receive ₹{member.balance}
-                </p>
-              )}
+        <div>
+          <p>Total Expenses</p>
 
-              {member.balance < 0 && (
-                <p style={{ color: "red" }}>
-                  Owes ₹{Math.abs(member.balance)}
-                </p>
-              )}
+          <h2>
+            ₹{summary.totalExpenses}
+          </h2>
+        </div>
 
-              {member.balance === 0 && (
-                <p>Settled</p>
-              )}
+      </section>
 
-              <hr />
-            </li>
-          ))}
-        </ul>
-      )}
+
+      {/* ==============================
+          MEMBER BALANCES
+      ============================== */}
+
+      <section className="summary-card">
+
+        <div className="summary-card-header">
+
+          <div>
+            <h2>Member Balances</h2>
+
+            <p>
+              See who has paid, owes, or should receive money.
+            </p>
+          </div>
+
+          <span className="summary-count">
+            {summary.members.length} Members
+          </span>
+
+        </div>
+
+
+        {summary.members.length === 0 ? (
+          <div className="summary-empty">
+            No members found.
+          </div>
+        ) : (
+          <div className="balance-grid">
+
+            {summary.members.map((member) => (
+
+              <div
+                className="balance-card"
+                key={member.user._id}
+              >
+
+                {/* Member Header */}
+
+                <div className="balance-card-header">
+
+                  <div className="balance-avatar">
+                    {member.user.name
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+
+                  <div className="balance-member-info">
+
+                    <h3>
+                      {member.user.name}
+                    </h3>
+
+                    <p>
+                      {member.user.email}
+                    </p>
+
+                  </div>
+
+                </div>
+
+
+                {/* Financial Details */}
+
+                <div className="balance-details">
+
+                  <div className="balance-item">
+                    <span>Paid</span>
+
+                    <strong>
+                      ₹{member.paid}
+                    </strong>
+                  </div>
+
+                  <div className="balance-item">
+                    <span>Owed</span>
+
+                    <strong>
+                      ₹{member.owed}
+                    </strong>
+                  </div>
+
+                  <div className="balance-item balance-total">
+                    <span>Balance</span>
+
+                    <strong>
+                      ₹{member.balance}
+                    </strong>
+                  </div>
+
+                </div>
+
+
+                {/* Balance Status */}
+
+                {member.balance > 0 && (
+                  <div className="balance-status receive">
+                    ↑ Should receive ₹{member.balance}
+                  </div>
+                )}
+
+                {member.balance < 0 && (
+                  <div className="balance-status owe">
+                    ↓ Owes ₹{Math.abs(member.balance)}
+                  </div>
+                )}
+
+                {member.balance === 0 && (
+                  <div className="balance-status settled">
+                    ✓ Settled
+                  </div>
+                )}
+
+              </div>
+
+            ))}
+
+          </div>
+        )}
+
+      </section>
+
     </div>
-  );
+  </div>
+);
 }
 
 export default GroupSummary;
