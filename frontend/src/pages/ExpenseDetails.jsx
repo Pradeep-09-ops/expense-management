@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-
+import "../styles/expenseDetails.css"
 function ExpenseDetails() {
   const { expenseId } = useParams();
   const navigate = useNavigate();
@@ -376,273 +376,456 @@ function ExpenseDetails() {
     return <h2>Expense not found</h2>;
   }
 
-  return (
-    <div>
-      <button onClick={() => navigate(-1)}>
-        ← Back
-      </button>
+return (
+  <div className="expense-details-page">
+    <div className="expense-details-container">
 
-      <h1>Expense Details</h1>
+      {/* ==============================
+          HEADER
+      ============================== */}
+
+      <div className="expense-details-header">
+
+        <button
+          className="expense-back-button"
+          onClick={() => navigate(-1)}
+        >
+          ← Back
+        </button>
+
+        <div>
+          <p className="expense-details-label">
+            EXPENSE MANAGEMENT
+          </p>
+
+          <h1>Expense Details</h1>
+        </div>
+
+      </div>
+
+
+      {/* ==============================
+          MESSAGES
+      ============================== */}
 
       {success && (
-        <p style={{ color: "green" }}>
+        <div className="expense-success">
           {success}
-        </p>
+        </div>
       )}
 
       {error && (
-        <p style={{ color: "red" }}>
+        <div className="expense-error">
           {error}
-        </p>
+        </div>
       )}
+
 
       {!editing ? (
         <>
-          <h2>{expense.description}</h2>
+          {/* ==============================
+              EXPENSE SUMMARY
+          ============================== */}
 
-          <p>
-            <strong>Amount:</strong>{" "}
-            ₹{expense.amount}
-          </p>
+          <section className="expense-summary-card">
 
-          <p>
-            <strong>Paid By:</strong>{" "}
-            {expense.paidBy?.name}
-          </p>
+            <div className="expense-summary-top">
 
-          <p>
-            <strong>Email:</strong>{" "}
-            {expense.paidBy?.email}
-          </p>
+              <div className="expense-summary-icon">
+                ₹
+              </div>
 
-          <p>
-            <strong>Split Type:</strong>{" "}
-            {expense.splitType}
-          </p>
+              <div className="expense-summary-title">
+                <h2>{expense.description}</h2>
 
-          <p>
-            <strong>Date:</strong>{" "}
-            {new Date(
-              expense.date
-            ).toLocaleString()}
-          </p>
+                <p>
+                  {new Date(
+                    expense.date
+                  ).toLocaleString()}
+                </p>
+              </div>
 
-          <hr />
+              <div className="expense-amount">
+                ₹{expense.amount}
+              </div>
 
-          <h2>Split Details</h2>
+            </div>
 
-          <ul>
-            {expense.splits.map((split) => (
-              <li key={split.user._id}>
+
+            <div className="expense-info-grid">
+
+              <div className="expense-info-item">
+                <span>Paid By</span>
+
                 <strong>
-                  {split.user.name}
+                  {expense.paidBy?.name}
                 </strong>
-                {" — "}
-                {expense.splitType ===
-                "PERCENTAGE"
-                  ? `${split.value}`
-                  : `₹${split.value}`}
-              </li>
-            ))}
-          </ul>
+              </div>
 
-          <br />
+              <div className="expense-info-item">
+                <span>Email</span>
 
-        <button
-            onClick={() => {
+                <strong>
+                  {expense.paidBy?.email}
+                </strong>
+              </div>
+
+              <div className="expense-info-item">
+                <span>Split Type</span>
+
+                <strong>
+                  {expense.splitType}
+                </strong>
+              </div>
+
+              <div className="expense-info-item">
+                <span>Date</span>
+
+                <strong>
+                  {new Date(
+                    expense.date
+                  ).toLocaleDateString()}
+                </strong>
+              </div>
+
+            </div>
+
+          </section>
+
+
+          {/* ==============================
+              SPLIT DETAILS
+          ============================== */}
+
+          <section className="expense-card">
+
+            <div className="expense-card-header">
+              <div>
+                <h2>Split Details</h2>
+
+                <p>
+                  How this expense is divided.
+                </p>
+              </div>
+
+              <span className="expense-count">
+                {expense.splits.length} Members
+              </span>
+            </div>
+
+            <div className="expense-split-list">
+
+              {expense.splits.map((split) => (
+                <div
+                  className="expense-split-item"
+                  key={split.user._id}
+                >
+
+                  <div className="expense-member-avatar">
+                    {split.user.name
+                      .charAt(0)
+                      .toUpperCase()}
+                  </div>
+
+                  <div className="expense-member-info">
+                    <strong>
+                      {split.user.name}
+                    </strong>
+
+                    <span>
+                      {split.user.email}
+                    </span>
+                  </div>
+
+                  <div className="expense-split-value">
+                    {expense.splitType ===
+                    "PERCENTAGE"
+                      ? `${split.value}%`
+                      : `₹${split.value}`}
+                  </div>
+
+                </div>
+              ))}
+
+            </div>
+
+          </section>
+
+
+          {/* ==============================
+              ACTIONS
+          ============================== */}
+
+          <div className="expense-actions">
+
+            <button
+              className="expense-edit-button"
+              onClick={() => {
                 setError("");
                 setSuccess("");
                 setEditing(true);
-            }}
-            >
-            Edit Expense
-        </button>
-
-        {" "}
-
-        <button
-            onClick={handleDeleteExpense}
-            disabled={deleting}
-            >
-            {deleting ? "Deleting..." : "Delete Expense"}
-        </button>
-     </>
-      ) : (
-        <>
-          <h2>Edit Expense</h2>
-
-          <form onSubmit={handleUpdateExpense}>
-            <div>
-              <label>Amount</label>
-              <br />
-
-              <input
-                type="number"
-                min="0.01"
-                step="0.01"
-                value={amount}
-                onChange={(e) =>
-                  setAmount(e.target.value)
-                }
-              />
-            </div>
-
-            <br />
-
-            <div>
-              <label>Description</label>
-              <br />
-
-              <input
-                type="text"
-                value={description}
-                onChange={(e) =>
-                  setDescription(e.target.value)
-                }
-              />
-            </div>
-
-            <br />
-
-            <div>
-              <label>Paid By</label>
-              <br />
-
-              <select
-                value={paidBy}
-                onChange={(e) =>
-                  setPaidBy(e.target.value)
-                }
-              >
-                <option value="">
-                  Select member
-                </option>
-
-                {members.map((member) => (
-                  <option
-                    key={member.userId._id}
-                    value={member.userId._id}
-                  >
-                    {member.userId.name}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <br />
-
-            <div>
-              <label>Split Type</label>
-              <br />
-
-              <select
-                value={splitType}
-                onChange={
-                  handleSplitTypeChange
-                }
-              >
-                <option value="EQUAL">
-                  Equal
-                </option>
-
-                <option value="EXACT">
-                  Exact Amount
-                </option>
-
-                <option value="PERCENTAGE">
-                  Percentage
-                </option>
-              </select>
-            </div>
-
-            <br />
-
-            <div>
-              <label>Split Between</label>
-
-              {members.map((member) => {
-                const memberId =
-                  member.userId._id;
-
-                const isSelected =
-                  selectedMembers.includes(
-                    memberId
-                  );
-
-                return (
-                  <div key={memberId}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={isSelected}
-                        onChange={() =>
-                          handleMemberSelection(
-                            memberId
-                          )
-                        }
-                      />
-
-                      {" "}
-                      {member.userId.name}
-                    </label>
-
-                    {isSelected &&
-                      splitType !== "EQUAL" && (
-                        <input
-                          type="number"
-                          min="0"
-                          step="0.01"
-                          placeholder={
-                            splitType ===
-                            "EXACT"
-                              ? "Amount"
-                              : "Percentage"
-                          }
-                          value={
-                            splitValues[
-                              memberId
-                            ] ?? ""
-                          }
-                          onChange={(e) =>
-                            handleSplitValueChange(
-                              memberId,
-                              e.target.value
-                            )
-                          }
-                        />
-                      )}
-                  </div>
-                );
-              })}
-            </div>
-
-            <br />
-
-            <button
-              type="submit"
-              disabled={saving}
-            >
-              {saving
-                ? "Saving..."
-                : "Save Changes"}
-            </button>
-
-            {" "}
-
-            <button
-              type="button"
-              onClick={() => {
-                setEditing(false);
-                setError("");
               }}
             >
-              Cancel
+              Edit Expense
             </button>
-          </form>
+
+            <button
+              className="expense-delete-button"
+              onClick={handleDeleteExpense}
+              disabled={deleting}
+            >
+              {deleting
+                ? "Deleting..."
+                : "Delete Expense"}
+            </button>
+
+          </div>
+
+        </>
+      ) : (
+        <>
+          {/* ==============================
+              EDIT EXPENSE
+          ============================== */}
+
+          <section className="expense-card edit-expense-card">
+
+            <div className="expense-card-header">
+              <div>
+                <h2>Edit Expense</h2>
+
+                <p>
+                  Update the expense details and split.
+                </p>
+              </div>
+            </div>
+
+
+            <form
+              className="edit-expense-form"
+              onSubmit={handleUpdateExpense}
+            >
+
+              {/* Amount */}
+
+              <div className="edit-field">
+                <label htmlFor="amount">
+                  Amount
+                </label>
+
+                <input
+                  id="amount"
+                  type="number"
+                  min="0.01"
+                  step="0.01"
+                  value={amount}
+                  onChange={(e) =>
+                    setAmount(e.target.value)
+                  }
+                />
+              </div>
+
+
+              {/* Description */}
+
+              <div className="edit-field">
+                <label htmlFor="description">
+                  Description
+                </label>
+
+                <input
+                  id="description"
+                  type="text"
+                  value={description}
+                  onChange={(e) =>
+                    setDescription(e.target.value)
+                  }
+                />
+              </div>
+
+
+              {/* Paid By */}
+
+              <div className="edit-field">
+                <label htmlFor="paidBy">
+                  Paid By
+                </label>
+
+                <select
+                  id="paidBy"
+                  value={paidBy}
+                  onChange={(e) =>
+                    setPaidBy(e.target.value)
+                  }
+                >
+                  <option value="">
+                    Select member
+                  </option>
+
+                  {members.map((member) => (
+                    <option
+                      key={member.userId._id}
+                      value={member.userId._id}
+                    >
+                      {member.userId.name}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+
+              {/* Split Type */}
+
+              <div className="edit-field">
+                <label htmlFor="splitType">
+                  Split Type
+                </label>
+
+                <select
+                  id="splitType"
+                  value={splitType}
+                  onChange={handleSplitTypeChange}
+                >
+                  <option value="EQUAL">
+                    Equal
+                  </option>
+
+                  <option value="EXACT">
+                    Exact Amount
+                  </option>
+
+                  <option value="PERCENTAGE">
+                    Percentage
+                  </option>
+                </select>
+              </div>
+
+
+              {/* Split Members */}
+
+              <div className="edit-split-section">
+
+                <div className="edit-split-header">
+                  <div>
+                    <h3>Split Between</h3>
+
+                    <p>
+                      Select the members included
+                      in this expense.
+                    </p>
+                  </div>
+                </div>
+
+                <div className="edit-member-list">
+
+                  {members.map((member) => {
+
+                    const memberId =
+                      member.userId._id;
+
+                    const isSelected =
+                      selectedMembers.includes(
+                        memberId
+                      );
+
+                    return (
+                      <div
+                        className="edit-member-item"
+                        key={memberId}
+                      >
+
+                        <div className="edit-member-check">
+
+                          <input
+                            id={`edit-${memberId}`}
+                            type="checkbox"
+                            checked={isSelected}
+                            onChange={() =>
+                              handleMemberSelection(
+                                memberId
+                              )
+                            }
+                          />
+
+                          <label
+                            htmlFor={`edit-${memberId}`}
+                          >
+                            {member.userId.name}
+                          </label>
+
+                        </div>
+
+                        {isSelected &&
+                          splitType !== "EQUAL" && (
+                            <input
+                              className="edit-split-value"
+                              type="number"
+                              min="0"
+                              step="0.01"
+                              placeholder={
+                                splitType === "EXACT"
+                                  ? "Amount"
+                                  : "Percentage"
+                              }
+                              value={
+                                splitValues[
+                                  memberId
+                                ] ?? ""
+                              }
+                              onChange={(e) =>
+                                handleSplitValueChange(
+                                  memberId,
+                                  e.target.value
+                                )
+                              }
+                            />
+                          )}
+
+                      </div>
+                    );
+                  })}
+
+                </div>
+
+              </div>
+
+
+              {/* Buttons */}
+
+              <div className="edit-expense-actions">
+
+                <button
+                  type="submit"
+                  className="save-expense-button"
+                  disabled={saving}
+                >
+                  {saving
+                    ? "Saving..."
+                    : "Save Changes"}
+                </button>
+
+                <button
+                  type="button"
+                  className="cancel-expense-button"
+                  onClick={() => {
+                    setEditing(false);
+                    setError("");
+                  }}
+                >
+                  Cancel
+                </button>
+
+              </div>
+
+            </form>
+
+          </section>
         </>
       )}
+
     </div>
-  );
+  </div>
+);
 }
 
 export default ExpenseDetails;
